@@ -1,0 +1,114 @@
+<apex:page controller="JBInvoiceViewController" tabStyle="Account" >
+    
+ 
+
+
+<script>
+    function newPopup(url) {
+         
+        newwindow=window.open(url,'Invoice','height=600,width=900');
+    if (newwindow.focus) {newwindow.focus()}
+        return false;
+    
+       
+    }
+    function openWindow( url )
+    {
+      window.open(url, '_blank');
+      window.focus();
+      return false;
+    }
+ 
+</script>
+
+   <apex:sectionHeader subtitle="Invoice" title="jBilling"/>
+    <apex:pageMessages id="paegMessage"/>  
+    <apex:form >
+    
+    <apex:pageBlock rendered="{!Not(Error) }" > 
+        <apex:pageBlockButtons >
+            
+            <apex:commandButton title="Print Invoice"  value="Print Invoice"  onclick=" return openWindow('/apex/JBInvoicePdfViewer?Jid={!JIWS.id}&Uid={!JIWS.userId}');" />
+            
+        </apex:pageBlockButtons>
+        <apex:pageblockSection title="Invoice Detail" >
+             <apex:outputText value="{!UPWS.FullName}" label="Customer Name" />  
+             <apex:outputText value="{!UPWS.companyName}" label="Organization Name" />  
+            
+            
+            <apex:outputText value="{!JIWS.userId}" label="User Id" />  
+            <apex:outputText value="{!UPWS.UserName}" label="User Name" />  
+            
+            <apex:outputText value="{!JIWS.id}" label="Invoice Id" /> 
+            <apex:outputText value="{!JIWS.number_x}" label="Invoice Number" /> 
+            <apex:outputText value="{!JIWS.statusString}" label="Payment Status" /> 
+             
+            <apex:outputText value="{0,date,MM/dd/yyyy}" label="Invoice Date">
+                <apex:param value="{!JIWS.createDateTime}"  />
+            </apex:outputText>
+            <apex:outputText value="{0,date,MM/dd/yyyy}" label="Due Date">
+                <apex:param value="{!JIWS.dueDate}" / >
+            </apex:outputText> 
+            <apex:outputText value="{0,date,MM/dd/yyyy}" label="Generated Date">
+                <apex:param value="{!JIWS.createTimeStamp}" />
+            </apex:outputText> 
+            
+            
+            <apex:outputText value="{0,number,{!If(JIWS.currencyId == 1,'$','')}{!If(JIWS.currencyId == 3,'€','')}00.00}" label="Balance">
+               <apex:param value="{!balanceOfInv}" />
+           </apex:outputText>
+            <!--
+            <apex:outputText label="Balance" value="{!JIWS.BalanceString}" >
+           </apex:outputText>-->
+           
+           <apex:outputText value="{0,number,{!If(JIWS.currencyId == 1,'$','')}{!If(JIWS.currencyId == 3,'€','')}0.00}" label="Amount">
+               <apex:param value="{!JIWS.totalInt}" />
+           </apex:outputText>
+            
+           <apex:outputText value="{0,number,{!If(JIWS.currencyId == 1,'$','')}{!If(JIWS.currencyId == 3,'€','')}0.00}" label="Carried Balance ">
+               <apex:param value="{!JIWS.carriedBalance}" />
+           </apex:outputText>
+           
+           
+             
+       </apex:pageblockSection>
+       
+       <apex:pageblockSection title="Invoice Line Items " collapsible="false"  columns="1"  > 
+           <apex:pageblockTable value="{!JIWS.LineItems}" var="LI"  rendered="{!if(JIWS.LineItems != null && JIWS.LineItems.size > 0 ,false,true)}" >
+                <apex:column headerValue="No Record Found"  />    
+           </apex:pageblockTable>
+           
+           <apex:pageblockTable value="{!JIWS.LineItems}" var="LI"  rendered="{!if(JIWS.LineItems != null && JIWS.LineItems.size > 0 ,true,false)}" >
+
+
+            <apex:column value="{!LI.id}" headerValue="Invoice Line Item"  />  
+            <apex:column value="{!LI.description}" headerValue="description"  />  
+      
+            <apex:column headerValue="Quantity" >
+                 <apex:outputText value="{0,number,00}"  >
+                   <apex:param value="{!LI.quantityAsDecimal }"  />
+                 </apex:outputText>
+             </apex:column>
+             
+            <apex:column headerValue="Price" >
+                 <apex:outputText value="{0,number,{!If(JIWS.currencyId == 1,'$','')}{!If(JIWS.currencyId == 3,'€','')}00.00}"  >
+                   <apex:param value="{!LI.priceAsDecimal  }"  />
+                 </apex:outputText>
+             </apex:column>
+
+            <apex:column headerValue="Amount" >
+                 <apex:outputText value="{0,number,{!If(JIWS.currencyId == 1,'$','')}{!If(JIWS.currencyId == 3,'€','')}00.00}"  >
+                   <apex:param value="{!LI.amountAsDecimal}"  />
+                 </apex:outputText>
+             </apex:column>             
+                               
+           </apex:pageblockTable>     
+       </apex:pageblockSection>    
+      
+      
+      
+      
+       
+    </apex:pageBlock>
+ </apex:form>
+</apex:page>

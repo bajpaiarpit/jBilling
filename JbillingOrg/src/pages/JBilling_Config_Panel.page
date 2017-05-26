@@ -1,0 +1,95 @@
+<apex:page controller="JBillingConfigController" action="{!pageload}" tabstyle="JBilling_Administration_Panel__tab">
+<apex:pagemessages id="pgmsgs"/>     
+<apex:form >                                                           
+    <apex:pageBlock title="jBilling Configuration Panel" rendered="{!isQuoteManage == false}">
+        <apex:pageBlockButtons location="Bottom">
+            <apex:commandbutton value="Save" action="{!savecredentials}"/>&nbsp;
+            <apex:commandbutton value="Cancel" action="{!Cancel}"/>
+        </apex:pageBlockButtons>
+                
+        <apex:panelGrid columns="2" >
+            <apex:outputText value="Username:"/>
+            <apex:inputText id="idUser" value="{!username}" style="border-color: darkSeaGreen;border-width: 1px;"  />
+    
+            <apex:outputText value="Password:"/>
+            <apex:inputsecret id="idPwd" value="{!pwd}"  style="border-color: darkSeaGreen;border-width: 1px;"/>
+            
+            <apex:outputText value="Company ID:" />
+            <apex:inputText Value="{!companyId}"  style="border-color: darkSeaGreen;border-width: 1px;"/>
+            
+            <apex:outputText value="jBilling Url:"/>
+            <apex:inputText Value="{!jbUrl}" style="border-color: darkSeaGreen;border-width: 1px;"/>
+            <!-- <apex:inputField value="{!applist.End_Point_URL__c}" style="border-color: darkSeaGreen;border-width: 1px;"/> -->
+        </apex:panelGrid>
+        
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="Set Partner ID" rendered="{!isQuoteManage == false}">
+        <h3>Populate the Partner ID field in jBilling with the following optional value. Used to distinguish customers created via the Salesforce integration from other jBilling accounts.</h3>
+            <apex:pageBlockButtons location="Bottom">
+                <apex:commandButton Value="Save Partner ID" action="{!SavePartner}"></apex:commandButton>
+            </apex:pageBlockButtons>
+            
+            <br/><br/>
+            <apex:outputText value="Partner Field: "></apex:outputText>
+            <apex:InputText id="Appuser" Value="{!partner}" style="border-color: darkSeaGreen;border-width: 1px;"></apex:InputText>
+            
+    </apex:pageBlock>
+    <apex:pageBlock title="Order Status Management" rendered="{!isQuoteManage == false}">
+        <h3>Value to set order status for orders created from existing subscription from Salesforce.</h3>
+            <apex:pageBlockButtons location="Bottom">
+                <apex:commandButton Value="Save Status" action="{!SaveStatus}"></apex:commandButton>
+            </apex:pageBlockButtons>
+            
+            <br/><br/>
+            <apex:outputText value="Order Status: "></apex:outputText>
+            <apex:selectList value="{!orderstatus}" multiselect="false" size="1" style="margin-left:20px;">
+               <apex:selectOptions value="{!Orderst}"></apex:selectOptions>
+            </apex:selectList>
+            
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="Quote Terms Management" rendered="{!isQuoteManage == true}">
+        
+        <apex:pageBlockSection title="Quote Terms" collapsible="false" rendered="{!AND(isQuoteManage == true,isQuoteEdit==false)}">
+            <apex:pageBlockTable value="{!tempQuote}" var="qt">
+                <apex:column headervalue="Quote Name">
+                    <apex:outputText value="{!qt.Name}"></apex:outputText>
+                </apex:column>
+                <apex:column headervalue="Edit">
+                    <apex:commandLink value="Edit" action="{!EditQuoteTerm}">
+                        <apex:param name="SelectedTerm" value="{!qt.Id}" />
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column headervalue="Delete">
+                <apex:commandLink value="Delete" action="{!DeleteQuoteTerm}"  onclick="return confirm('Are you sure you want to delete?');">
+                        <apex:param name="SelectedTerm" value="{!qt.Id}" />
+                    </apex:commandLink> 
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockButtons location="Bottom">
+            <apex:commandButton value="Save Terms" action="{!SaveTerms}"/>
+        </apex:pageBlockButtons>
+        <br/><br/>
+        <apex:OutputText rendered="{!AND(isQuoteManage == true,isQuoteEdit==false)}"><Font size="2"><b><u>New Quote Terms</u></b></Font></apex:OutputText>
+        <apex:OutputText rendered="{!AND(isQuoteManage == true,isQuoteEdit==true)}"><Font size="2"><b><u>Edit Quote Terms</u></b></Font></apex:OutputText>
+        <br/><br/>
+        <apex:outputText value="Quote Terms Name:"/>&nbsp;&nbsp;
+        <apex:inputField value="{!quoteTerm.Name}"/>
+    
+        <br/><br/>
+        <apex:OutputText value="Quote Type:"/>&nbsp;&nbsp;
+        <apex:inputField value="{!quoteTerm.Quote_Types__c}"/>
+        <br/><br/>
+    
+        <apex:outputText value="Quote Terms:"/><br/>
+        <apex:inputField value="{!quoteTerm.Quote_Terms__c}"/>
+            
+        
+        
+    </apex:pageBlock>
+</apex:form>
+
+</apex:page>

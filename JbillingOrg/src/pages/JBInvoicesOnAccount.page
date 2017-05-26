@@ -1,0 +1,49 @@
+<apex:page standardController="Account" extensions="JBInvoicesOnAccountController"   >
+
+<apex:pageBlock rendered="{!error}">
+     <center> {!ErrorMsg }</center> 
+</apex:pageBlock>
+ 
+
+ 
+<apex:pageBlock rendered="{!NOT(error)}">
+    <apex:pageblockTable value="{!xlistInvDetail}" var="inovice" rendered="{!if(xlistInvDetail.size > 0 ,true,false)}" >
+         <apex:column title="Invoice ID"  headerValue="Invoice Number"  >
+               <apex:outputLink value="/apex/JBInvoiceView?Jid={!inovice.Invoicenumber}" onclick="window.parent.location.href = '/apex/JBInvoiceView?Jid={!inovice.Invoicenumber}'; "  >
+               {!inovice.Invoicenumber}
+               </apex:outputLink>
+         </apex:column>
+         <apex:column HeaderValue="Invoice Status" >
+            <apex:outputText value="{!inovice.invoicestatus}"></apex:outputText>
+        </apex:column>
+        <apex:column HeaderValue="Invoice date" >
+            <apex:outputText value="{0,date,MM/dd/yyyy}">
+                    <apex:param value="{!inovice.invoicedate}"/>
+                </apex:outputText>
+        </apex:column>
+        <apex:column HeaderValue="Due Date" >
+            <apex:outputText value="{0,date,MM/dd/yyyy}">
+                    <apex:param value="{!inovice.duedate}"/>
+                </apex:outputText>
+        </apex:column>
+        <apex:column HeaderValue="Amount" >
+            {!inovice.curr} 
+            <apex:outputText value="{0,number,00.00}">
+                    <apex:param value="{!inovice.amountAsdecimal}"/>
+                </apex:outputText>
+        </apex:column>
+        <apex:column HeaderValue="Balance" >
+            {!inovice.curr} <apex:outputText value="{0,number,00.00}">
+                    <apex:param value="{!inovice.balanceAsDecimal}"/>
+                </apex:outputText>
+        </apex:column>
+         
+    </apex:pageblockTable>
+    
+    
+    <apex:pageblockTable value="{!xlistInvDetail}" var="inovice" rendered="{!if(xlistInvDetail.size > 0 ,false,true)}" >
+         <apex:column title="Invoice ID"  headerValue="No Record Found"  >     </apex:column>
+    </apex:pageblockTable>
+</apex:pageBlock>
+   
+</apex:page>

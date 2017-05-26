@@ -1,0 +1,45 @@
+<apex:page controller="QuoteTemplateController" tabstyle="JBilling_Administration_Panel__tab">
+<apex:pageMessages />
+
+<apex:form >
+    <apex:pageBlock title="Quote Template">
+    
+        <apex:pageBlockButtons location="Bottom">
+            <apex:commandButton value="Save" action="{!save}"/>
+            <apex:commandButton value="Cancel" action="{!Cancel}"/>
+            
+        </apex:pageBlockButtons>
+        
+        <apex:outputPanel id="page">
+        <apex:pageBlockSection title="Existing Templates" rendered="{!existingTemp.size > 0}">
+            <apex:pageBlockTable value="{!existingTemp}" var="et">
+                <apex:column HeaderValue="Template Name">
+                    <apex:commandLink value="{!et.Name}" action="{!EditTemp}">
+                        <apex:param name="SelectedTerm" value="{!et.Id}" />
+                    </apex:commandLink>
+                </apex:column>
+            </apex:pageBlockTable> 
+        </apex:pageBlockSection>
+        </apex:outputPanel>
+        <apex:outputPanel id="page2">
+        <apex:pageBlockSection title="{!sectiontitle}" columns="1">
+        
+            <apex:inputField value="{!saveobj.Name}"/>
+            <apex:inputField value="{!saveobj.Subscription_Type__c}"/>
+            <apex:inputField value="{!saveobj.Margins_top_bottom__c}"/>
+            <apex:inputField value="{!saveobj.Margins_left_right__c}"/>
+            <apex:inputField value="{!saveobj.Font_Face__c}"/>
+            <apex:inputField value="{!saveobj.Font_Size__c}"/>
+            <apex:inputField value="{!saveobj.Main_Heading__c}"/>
+            <apex:inputField value="{!saveobj.Sub_Heading__c}"/>
+            <apex:inputField value="{!saveobj.Company_Name__c}"/>
+            <apex:inputField value="{!saveobj.Singnature_Line__c}" style="width:400px"/>
+            <apex:inputField value="{!saveobj.Header__c}"/>
+            <apex:inputField value="{!saveobj.Footer__c}" style="width:400px"/>
+            
+        </apex:pageBlockSection>
+        </apex:outputPanel>
+    
+    </apex:pageBlock>
+</apex:form>
+</apex:page>

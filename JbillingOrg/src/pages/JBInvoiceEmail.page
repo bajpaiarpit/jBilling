@@ -1,0 +1,27 @@
+<apex:page controller="JBInvoiceEmailController"  action="{!InitForEmail}"     > 
+   
+  <apex:sectionHeader subtitle="Invoice" title="jBilling"/>
+    <apex:pageMessages id="paegMessage"/>  
+    <apex:form >
+    <apex:pageBlock rendered="{!Not(Error) }" > 
+        <apex:pageBlockButtons >
+            <apex:commandButton title="Send Invoice"  value="Send Invoice" action="{!SendEmail}"  rendered="{!isShow == true}"/>
+            <apex:commandButton value="Back To Account"  action="{!BackToAcc}" rendered="{!isShow == false}"/> 
+        </apex:pageBlockButtons>
+            <apex:pageblockSection columns="1" rendered="{!isShow == true}">
+                
+                 <apex:inputTextarea value="{!EmailList}" Label="To" style="width:350px;"/>
+                 <apex:pageBlockSectionItem rendered="{!iserrorshow == true}"> <!-- rendered="{!iserrorshow == true}" -->
+                    <h3 style="color:gray;color:red;margin-left:132px;">Seperate multiple email addresses using semi-colon (;) or comma (,)</h3>
+                 </apex:pageBlockSectionItem>   
+                 <!-- <apex:inputfield value="{!ACC.Email__c}"  label="To" />  -->
+                 <apex:inputtext value="{!subject}" required="true"  size="40"  label="Subject" />
+                 <apex:inputtextarea value="{!Body}"  label="Body"  richText="true" />
+
+            </apex:pageblockSection>
+            <apex:pageBlockSection rendered="{!isShow == false">
+                
+            </apex:pageBlockSection>
+     </apex:pageBlock>
+   </apex:form>
+</apex:page>

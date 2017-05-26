@@ -1,0 +1,13 @@
+<apex:page controller="JBillingAdminPAnelController">
+
+<apex:form >
+    <apex:pageBlock title="jBilling Administration panel">
+        <apex:pageBlockSection >
+            <apex:commandLink value="jBilling API Configuration Panel" action="{!GotoAPIPanel}"/><br/>
+            <apex:commandLink value="Quote Terms Management" action="{!GotoQuoteManagement}"/><br/>
+            <apex:commandLink value="Quote Template Management" action="{!GotoQuoteTemplate}"/>
+        </apex:pageBlockSection>
+    </apex:pageBlock>   
+</apex:form>
+
+</apex:page>
